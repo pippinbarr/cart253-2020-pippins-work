@@ -1,34 +1,28 @@
-let caterpillar = {
-  x: 100,
-  y: 250,
-  segmentSize: 50
+let bg = {
+  r: 0,
+  g: 0,
+  b: 0
 }
+
+let circle = {
+  x: 250,
+  y: 250,
+  size: 100
+}
+
 
 function setup() {
   createCanvas(500,500);
 }
 
 function draw() {
-  background(0);
-  noStroke();
-  fill(100,200,100);
+  background(bg.r,bg.g,bg.b);
 
-  // let x = caterpillar.x;
-  // let numSegments = 10;
-  // let segmentsDrawn = 0;
-  //
-  // while (segmentsDrawn < numSegments) {
-  //   ellipse(x,caterpillar.y,caterpillar.segmentSize);
-  //   x = x + 40;
-  //   segmentsDrawn++;
-  // }
+  ellipse(circle.x,circle.y,circle.size);
+}
 
-  let x = caterpillar.x;
-  let numSegments = 10;
-
-  for (let i = 0; i < numSegments; i++) {
-    ellipse(x,caterpillar.y,caterpillar.segmentSize);
-    x = x + 40;
-  }
-
+function mousePressed() {
+  bg.r = random(0,255);
+  bg.g = random(0,255);
+  bg.b = random(0,255);
 }
