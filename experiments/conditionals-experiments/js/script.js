@@ -1,23 +1,28 @@
+let clown = {
+  x: 250,
+  y: 250,
+  size: 100,
+  image: undefined
+};
 
-let angle = 0;
-let rectScale = 0;
+function preload() {
+  clown.image = loadImage("assets/images/clown.png");
+}
 
 function setup() {
   createCanvas(500,500);
 }
 
 function draw() {
-  background(127);
+  background(0);
 
-  push();
-  fill(255,0,0);
-  rectMode(CENTER);
-  translate(width/2,height/2);
-  rotate(angle);
-  scale(rectScale);
-  rect(0,0,100,100);
-  pop();
+  clown.x = mouseX;
+  clown.y = mouseY;
 
-  angle = angle + 0.01;
-  rectScale = rectScale + 0.01;
+  imageMode(CENTER);
+  image(clown.image,clown.x,clown.y,clown.size,clown.size);
+}
+
+function mousePressed() {
+  clown.size = clown.size + 50;
 }
