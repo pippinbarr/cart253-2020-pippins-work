@@ -1,13 +1,8 @@
-let clown = {
+let circle = {
   x: 250,
   y: 250,
   size: 100,
-  image: undefined
 };
-
-function preload() {
-  clown.image = loadImage("assets/images/clown.png");
-}
 
 function setup() {
   createCanvas(500,500);
@@ -16,13 +11,18 @@ function setup() {
 function draw() {
   background(0);
 
-  clown.x = mouseX;
-  clown.y = mouseY;
+  let mouseIsLeft = undefined;
 
-  imageMode(CENTER);
-  image(clown.image,clown.x,clown.y,clown.size,clown.size);
-}
+  if (mouseX >= width/2) {
+    console.log("Mouse is to the right...");
+    mouseIsLeft = false;
+  }
+  else {
+    console.log("Mouse is to the left...");
+    mouseIsLeft = true;
+  }
 
-function mousePressed() {
-  clown.size = clown.size + 50;
+  //
+
+  ellipse(circle.x,circle.y,circle.size);
 }
