@@ -1,32 +1,61 @@
-let hello = {
-  string: `Hello, world!`,
+let circle = {
   x: 0,
-  y: 0,
-  vx: 5,
-  vy: 1,
-  size: 64
+  y: 250,
+  size: 100,
+  vx: 0,
+  vy: 0,
+  speed: 2
 };
 
+let state = `title`; // Possible states are: title, animation, ending
 
 function setup() {
   createCanvas(500,500);
+  circle.vx = circle.speed;
+  textSize(32);
+  textAlign(CENTER,CENTER);
 }
 
 function draw() {
   background(0);
 
-  hello.x = hello.x + hello.vx;
-  hello.y = hello.y + hello.vy;
+  if (state === `title`) {
+    title();
+  }
+  else if (state === `animation`) {
+    animation();
+  }
+  else if (state === `ending`) {
+    ending();
+  }
+}
 
-  hello.size = hello.size + 1;
+function title() {
+  // Title
+  fill(255);
+  text(`Life.`,width/2,height/2);
+}
 
-  textAlign(CENTER,CENTER);
-  textSize(hello.size);
-  textStyle(BOLD);
+function animation() {
+  // Animation
+  circle.x = circle.x + circle.vx;
+  circle.y = circle.y + circle.vy;
 
-  fill(200,50,200);
-  stroke(50,200,50);
-  strokeWeight(3);
+  if (circle.x > width) {
+    state = `ending`;
+  }
 
-  text(hello.string,hello.x,hello.y);
+  ellipse(circle.x,circle.y,circle.size);
+}
+
+function ending() {
+  // Ending
+  fill(127);
+  text(`It's all over.`,width/2,height/2);
+}
+
+function keyPressed() {
+  if (state === `title`) {
+    state = `animation`;
+  }
 }
