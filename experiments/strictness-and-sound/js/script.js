@@ -1,8 +1,9 @@
+"use strict";
 
-let music;
-
-function preload() {
-  music = loadSound(`assets/sounds/bark.wav`);
+let circle = {
+  x: 0,
+  y: 0,
+  size: 100
 }
 
 function setup() {
@@ -11,18 +12,9 @@ function setup() {
 
 function draw() {
   background(0);
-}
 
-function mousePressed() {
-  tryMusic();
-}
+  circle.x = mouseX;
+  circle.y = mouseY;
 
-function keyPressed() {
-  tryMusic();
-}
-
-function tryMusic() {
-  if (!music.isPlaying()) {
-    music.loop();
-  }
+  ellipse(circle.x,circle.y,100);
 }
