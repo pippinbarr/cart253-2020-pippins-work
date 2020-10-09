@@ -1,21 +1,24 @@
-// Variables to store our Fish in...
-let fish;
-let fish2;
+"use strict";
 
-function setup() {
-  createCanvas(500, 500);
-  // Create our Fish
-  fish = new Fish();
-  fish2 = new Fish();
+let rates = [1.5, 1.75, 2.25, 2.5, 2.75, 3];
+
+let barkSFX;
+
+function preload() {
+  barkSFX = loadSound(`assets/sounds/bark.wav`);
 }
 
+// setup() the canvas ready
+function setup() {
+  createCanvas(600, 600);
+}
+
+// draw() draws a circle with a trails
 function draw() {
   background(0);
+}
 
-  // Move and display our fish
-  fish.move();
-  fish2.move();
-
-  fish.display();
-  fish2.display();
+function mousePressed() {
+  barkSFX.rate(random(rates));
+  barkSFX.play();
 }
