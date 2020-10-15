@@ -1,11 +1,11 @@
 class Flower {
 
-  constructor() {
+  constructor(x, y, size, stemLength, petalColor) {
     // Position and size information
-    this.x = random(0, width);
-    this.y = random(0, height);
-    this.size = 50;
-    this.stemLength = 75;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.stemLength = stemLength;
     this.stemThickness = 10;
     this.petalThickness = 10;
     // Color information
@@ -14,11 +14,7 @@ class Flower {
       g: 150,
       b: 50
     };
-    this.petalColor = {
-      r: 200,
-      g: 50,
-      b: 50
-    };
+    this.petalColor = petalColor;
     this.centreColor = {
       r: 50,
       g: 0,
@@ -38,6 +34,14 @@ class Flower {
     stroke(this.petalColor.r, this.petalColor.g, this.petalColor.b);
     ellipse(this.x, this.y, this.size);
     pop();
+  }
+
+  mousePressed() {
+    let d = dist(this.x,this.y,mouseX,mouseY);
+    if (d < this.size/2 + this.petalThickness) {
+      this.stemLength = this.stemLength + 5;
+      this.y = this.y - 5;
+    }
   }
 
 }
