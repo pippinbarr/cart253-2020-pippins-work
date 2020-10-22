@@ -1,62 +1,42 @@
 "use strict";
 
-// Two rectangles represented in terms of position, dimensions, and velocity
-let rect1 = {
-  x: 0,
-  y: 250,
-  width: 100,
-  height: 100,
-  vx: 2, // Moving right
-  vy: 0
-};
+// Our vehicles
+let vehicles = [];
+// How many of each kind
+let numCars = 5;
+let numSportsCars = 5;
 
-let rect2 = {
-  x: 600,
-  y: 300,
-  width: 100,
-  height: 100,
-  vx: -2, // Moving left
-  vy: 0
-};
-
+// Set up the canvas and our cars
 function setup() {
   createCanvas(600, 600);
+  // Create the correct number of cars and put them in our vehicles array
+  for (let i = 0; i < numCars; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    let car = new Car(x, y);
+    vehicles.push(car);
+  }
+
+  // Create the correct number of sports cars and put them in our vehicles array
+  for (let i = 0; i < numSportsCars; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    let sportscar = new SportsCar(x, y);
+    vehicles.push(sportscar);
+  }
 }
 
+// Display and move the cars
 function draw() {
   background(0);
 
-  // Move our rectangles according to their velocity
-  rect1.x = rect1.x + rect1.vx;
-  rect1.y = rect1.y + rect1.vy;
-
-  rect2.x = rect2.x + rect2.vx;
-  rect2.y = rect2.y + rect2.vy;
-
-  // We want to check if the rectangles overlap (collide) so let's
-  // track that in a variable. We'll assume they don't...
-  let overlap = false;
-
-  // Now we check if there is an overlap
-  if (rect1.x + rect1.width > rect2.x && // Is the right side of rect1 past the left side of rect2?
-    rect1.x < rect2.x + rect2.width && // Is the left side of rect1 NOT past the right side of rect2?
-    rect1.y + rect1.height > rect2.y && // Is the bottom of rect1 past the top of rect2?
-    rect1.y < rect2.y + rect2.height) { // Is the top of rect1 NOT past the bottom of rect2?
-    // If ALL of those things are true, the rectangles are overlapping.
-    overlap = true;
+  // Go through all the vehicles (cars and sportscars)
+  // and move, wrap, and display them. We can do this because we know
+  // that all vehicles have those methods!
+  for (let i = 0; i < vehicles.length; i++) {
+    let vehicle = vehicles[i];
+    vehicle.move();
+    vehicle.wrap();
+    vehicle.display();
   }
-
-  noStroke();
-
-  // We fill the rectangles red if they overlap and green otherwise
-  if (overlap) {
-    fill(255, 0, 0);
-  }
-  else {
-    fill(0, 255, 0);
-  }
-
-  // Display our rectangles
-  rect(rect1.x, rect1.y, rect1.width, rect1.height);
-  rect(rect2.x, rect2.y, rect2.width, rect2.height);
 }
