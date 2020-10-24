@@ -1,39 +1,129 @@
-// A variable to store the currently active state object (starts empty)
-let currentState;
+"use strict";
 
-// setup()
-// Create the canvas, start our program in the title state, set default text style
+// Our cars
+let vehicles = [];
+let numCars = 10;
+let numMotorcycles = 5;
+let numTrucks = 10;
+
+let pedestrian;
+
+let state = `title`;
+
+
+// Set up the canvas and our cars
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(600, 600);
 
-  // We can set the current state by creating a NEW object from the class
-  // representing that state! This will call its constructor() which will work
-  // like the `setup()` for that state.
-  currentState = new Title();
+  setupText();
+  setupVehicles();
+  setupPedestrian();
+}
 
-  // Text settings
+function setupText() {
   textSize(32);
   textAlign(CENTER, CENTER);
 }
 
-// draw()
-// Simply call the draw method of the current state
-function draw() {
-  // If the current state is Title this will call the Title class draw()
-  // If the current state is Animation this will call the Animation class draw()
-  // if the current state is Ending this will call the Ending class draw()
-  currentState.draw();
+function setupVehicles() {
+  // Create the correct number of cars and put them in our array
+  for (let i = 0; i < numCars; i++) {
+    let x = random(0, width);
+    let y = random(0, height - height / 10);
+    let car = new Car(x, y);
+    vehicles.push(car);
+  }
+
+  // Create the correct number of motorcycles and put them in our array
+  for (let i = 0; i < numMotorcycles; i++) {
+    let x = random(0, width);
+    let y = random(0, height - height / 10);
+    let motorcycle = new Motorcycle(x, y);
+    vehicles.push(motorcycle);
+  }
+
+  for (let i = 0; i < numTrucks; i++) {
+    let x = random(0, width);
+    let y = random(0, height - height / 10);
+    let truck = new Truck(x, y);
+    vehicles.push(truck);
+  }
+
+  for (let i = 0; i < vehicles.length; i++) {
+    let vehicle = vehicles[i];
+    if (random() < 0.5) {
+      vehicle.vx = -vehicle.speed
+    }
+    else {
+      vehicle.vx = vehicle.speed
+    }
+  }
 }
 
-// keyPressed()
-// Call the keyPressed method of the current state
-// Note how even if the specific state itself DOESN'T define a keyPressed() method this
-// will work because they all extend the State class which does have one. For instance
-// neither Animation nor Ending define a keyPressed() method, but this still works
-// because they INHERIT the one from the State class.
-function keyPressed() {
-  // If the current state is Title this will call the Title class keyPressed()
-  // If the current state is Animation this will call the State class keyPressed()
-  // if the current state is Ending this will call the State class keyPressed()
-  currentState.keyPressed();
+function setupPedestrian() {
+  pedestrian = new Pedestrian(width / 2, height);
+}
+
+// Display and move the cars
+function draw() {
+  background(0);
+
+  if (state === `title`) {
+    title();
+  }
+  else if (state === `simulation`) {
+    simulation();
+  }
+  else if (state === `success`) {
+    success();
+  }
+  else if (state === `dead`) {
+    dead();
+  }
+}
+
+function title() {
+  displayText(`THE CROSSER`);
+}
+
+
+function simulation() {
+  for (let i = 0; i < vehicles.length; i++) {
+    let vehicle = vehicles[i];
+    vehicle.move();
+    vehicle.wrap();
+    vehicle.display();
+
+    pedestrian.checkHit(vehicle);
+
+    if (pedestrian.dead) {
+      state = `dead`;
+    }
+    else if (pedestrian.y < 0) {
+      state = `success`;
+    }
+  }
+
+  pedestrian.handleInput();
+  pedestrian.move();
+  pedestrian.display();
+}
+
+function success() {
+  displayText(`YOU CROSSED THE ROAD!`)
+}
+
+function dead() {
+  displayText(`YOU DIED!`)
+}
+
+function displayText(message) {
+  push();
+  fill(255);
+  text(message, width / 2, height / 2);
+  pop();
+}
+
+function mousePressed() {
+  state = `simulation`;
 }
